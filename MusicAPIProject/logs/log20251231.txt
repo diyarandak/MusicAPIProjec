@@ -1,0 +1,120 @@
+2025-12-31 22:14:01.354 +03:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+PRAGMA journal_mode = 'wal';
+2025-12-31 22:14:01.598 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Labels" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Labels" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL,
+    "Country" TEXT NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL
+);
+2025-12-31 22:14:01.599 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Users" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Users" PRIMARY KEY AUTOINCREMENT,
+    "FullName" TEXT NOT NULL,
+    "Email" TEXT NOT NULL,
+    "Password" TEXT NOT NULL,
+    "Role" TEXT NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL
+);
+2025-12-31 22:14:01.600 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Artists" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Artists" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL,
+    "Bio" TEXT NOT NULL,
+    "LabelId" INTEGER NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL,
+    CONSTRAINT "FK_Artists_Labels_LabelId" FOREIGN KEY ("LabelId") REFERENCES "Labels" ("Id")
+);
+2025-12-31 22:14:01.601 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Albums" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Albums" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL,
+    "ReleaseDate" TEXT NOT NULL,
+    "Price" TEXT NOT NULL,
+    "ArtistId" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL,
+    CONSTRAINT "FK_Albums_Artists_ArtistId" FOREIGN KEY ("ArtistId") REFERENCES "Artists" ("Id") ON DELETE CASCADE
+);
+2025-12-31 22:14:01.601 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Concerts" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Concerts" PRIMARY KEY AUTOINCREMENT,
+    "Venue" TEXT NOT NULL,
+    "City" TEXT NOT NULL,
+    "Date" TEXT NOT NULL,
+    "ArtistId" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL,
+    CONSTRAINT "FK_Concerts_Artists_ArtistId" FOREIGN KEY ("ArtistId") REFERENCES "Artists" ("Id") ON DELETE CASCADE
+);
+2025-12-31 22:14:01.601 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Songs" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Songs" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL,
+    "DurationSeconds" INTEGER NOT NULL,
+    "TrackNumber" INTEGER NOT NULL,
+    "AlbumId" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL,
+    CONSTRAINT "FK_Songs_Albums_AlbumId" FOREIGN KEY ("AlbumId") REFERENCES "Albums" ("Id") ON DELETE CASCADE
+);
+2025-12-31 22:14:01.602 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Albums_ArtistId" ON "Albums" ("ArtistId");
+2025-12-31 22:14:01.603 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Artists_LabelId" ON "Artists" ("LabelId");
+2025-12-31 22:14:01.603 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Concerts_ArtistId" ON "Concerts" ("ArtistId");
+2025-12-31 22:14:01.604 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Songs_AlbumId" ON "Songs" ("AlbumId");
+2025-12-31 22:14:01.908 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Users" AS "u"
+    WHERE NOT ("u"."IsDeleted"))
+2025-12-31 22:14:03.286 +03:00 [INF] Executed DbCommand (10ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?' (Size = 15), @p2='?' (Size = 10), @p3='?' (DbType = Boolean), @p4='?' (Size = 60), @p5='?' (Size = 5), @p6='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("CreatedAt", "Email", "FullName", "IsDeleted", "Password", "Role", "UpdatedAt")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+RETURNING "Id";
+2025-12-31 22:14:03.317 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?' (Size = 14), @p2='?' (Size = 11), @p3='?' (DbType = Boolean), @p4='?' (Size = 60), @p5='?' (Size = 4), @p6='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("CreatedAt", "Email", "FullName", "IsDeleted", "Password", "Role", "UpdatedAt")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+RETURNING "Id";
+2025-12-31 22:14:03.397 +03:00 [INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+2025-12-31 22:14:03.430 +03:00 [INF] User profile is available. Using '/Users/diyarandak/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-12-31 22:14:03.664 +03:00 [INF] Now listening on: http://localhost:5202
+2025-12-31 22:14:03.667 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-31 22:14:03.667 +03:00 [INF] Hosting environment: Development
+2025-12-31 22:14:03.668 +03:00 [INF] Content root path: /Users/diyarandak/RiderProjects/MusicAPIProject/MusicAPIProject
+2025-12-31 22:14:25.953 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/ - null null
+2025-12-31 22:14:26.069 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-31 22:14:26.072 +03:00 [INF] İstek geldi: GET /
+2025-12-31 22:14:26.154 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/ - 404 0 null 201.8902ms
+2025-12-31 22:14:26.172 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5202/, Response status code: 404
+2025-12-31 22:14:31.503 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/swagger - null null
+2025-12-31 22:14:31.506 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger - 301 0 null 3.149ms
+2025-12-31 22:14:31.509 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/swagger/index.html - null null
+2025-12-31 22:14:31.575 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger/index.html - 200 null text/html;charset=utf-8 66.116ms
+2025-12-31 22:14:31.591 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/swagger/swagger-ui.css - null null
+2025-12-31 22:14:31.601 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/swagger/swagger-ui-bundle.js - null null
+2025-12-31 22:14:31.605 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/swagger/swagger-ui-standalone-preset.js - null null
+2025-12-31 22:14:31.629 +03:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-12-31 22:14:31.629 +03:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-12-31 22:14:31.629 +03:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-12-31 22:14:31.633 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger/swagger-ui-bundle.js - 200 1456926 text/javascript 31.9895ms
+2025-12-31 22:14:31.633 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger/swagger-ui-standalone-preset.js - 200 230280 text/javascript 27.6148ms
+2025-12-31 22:14:31.633 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger/swagger-ui.css - 200 152034 text/css 41.7285ms
+2025-12-31 22:14:32.465 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/swagger/v1/swagger.json - null null
+2025-12-31 22:14:32.485 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/swagger/favicon-32x32.png - null null
+2025-12-31 22:14:32.486 +03:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-12-31 22:14:32.486 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger/favicon-32x32.png - 200 628 image/png 0.7601ms
+2025-12-31 22:14:32.573 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 107.5437ms
+2025-12-31 22:16:51.736 +03:00 [INF] Application is shutting down...
