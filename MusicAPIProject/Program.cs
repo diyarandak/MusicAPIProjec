@@ -7,83 +7,112 @@ using Net9Odev.Data;
 using Net9Odev.DTOs;
 using Net9Odev.Services;
 using Net9Odev.Middleware;
-using Serilog; // EKLENDİ
+using Serilog; 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ==========================================
 // 1. SERILOG AYARLARI (LOGGING)
 // ==========================================
-// Logları hem konsola hem de "logs" klasöründeki dosyaya yazar.
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .WriteTo.Console()
     .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-// Serilog'u sisteme tanıtıyoruz
 builder.Host.UseSerilog();
 
 // ==========================================
 // 2. SERVİS VE VERİTABANI AYARLARI
 // ==========================================
 
+// Veritabanı Bağlantısı (SQLite)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// Servisler
+// Servislerin Kaydı (Dependency Injection)
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IArtistService, ArtistService>(); // Controller kullanıyor
-builder.Services.AddScoped<IAlbumService, AlbumService>();   // Controller kullanıyor
-builder.Services.AddScoped<ISongService, SongService>();     // Minimal API kullanıyor
-builder.Services.AddScoped<ILabelService, LabelService>();   // Minimal API kullanıyor
-builder.Services.AddScoped<IConcertService, ConcertService>(); // Minimal API kullanıyor
+builder.Services.AddScoped<IArtistService, ArtistService>(); 
+builder.Services.AddScoped<IAlbumService, AlbumService>();   
+builder.Services.AddScoped<ISongService, SongService>();     
+builder.Services.AddScoped<ILabelService, LabelService>();   
+builder.Services.AddScoped<IConcertService, ConcertService>(); 
 
-// Swagger
+// Swagger Konfigürasyonu (JWT Kilit Butonu İçin)
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Net9Odev API", Version = "v1" });
+    
+    // Swagger ekranında "Authorize" butonu çıksın diye:
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Name = "Authorization", Type = SecuritySchemeType.ApiKey, Scheme = "Bearer", In = ParameterLocation.Header, Description = "Bearer {token}"
+        Name = "Authorization", 
+        Type = SecuritySchemeType.ApiKey, 
+        Scheme = "Bearer", 
+        In = ParameterLocation.Header, 
+        Description = "Token bilgisini 'Bearer {token}' formatında giriniz."
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
-        { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, Array.Empty<string>() }
+        { 
+            new OpenApiSecurityScheme 
+            { 
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } 
+            }, 
+            Array.Empty<string>() 
+        }
     });
 });
 
-// JWT
+// JWT Authentication Ayarları
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true, ValidateAudience = true, ValidateLifetime = true, ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings["Issuer"], ValidAudience = jwtSettings["Audience"], IssuerSigningKey = new SymmetricSecurityKey(secretKey)
+            ValidateIssuer = true, 
+            ValidateAudience = true, 
+            ValidateLifetime = true, 
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"], 
+            ValidAudience = jwtSettings["Audience"], 
+            IssuerSigningKey = new SymmetricSecurityKey(secretKey)
         };
     });
 
 var app = builder.Build();
 
 // ==========================================
-// 3. BONUS: SEED DATA
+// 3. VERİTABANI OLUŞTURMA VE SEED DATA (ÖNEMLİ KISIM)
 // ==========================================
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<AppDbContext>();
-    context.Database.EnsureCreated(); 
-    await Net9Odev.Data.DataSeeder.SeedAsync(context);
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        
+        // EnsureCreated YERİNE Migrate KULLANIYORUZ
+        // Bu komut migration dosyasını çalıştırır ve tabloları nizami oluşturur.
+        context.Database.Migrate(); 
+        
+        // Başlangıç verilerini (Admin vs.) ekle
+        await Net9Odev.Data.DataSeeder.SeedAsync(context);
+    }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "Veritabanı yapılandırması sırasında bir hata oluştu.");
+    }
 }
 
 // ==========================================
-// 4. PIPELINE
+// 4. HTTP PIPELINE (MIDDLEWARE)
 // ==========================================
 
 if (app.Environment.IsDevelopment())
@@ -94,17 +123,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// ★ GLOBAL EXCEPTION MIDDLEWARE ★
-// Serilog otomatik olarak buradaki logları yakalar
+// Global Hata Yakalama (Try-Catch yerine geçer)
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthentication(); // Kimlik Kontrolü
+app.UseAuthorization();  // Yetki Kontrolü
 
-app.MapControllers(); // User, Album, Artist
+app.MapControllers(); // Klasik Controller'lar (User, Artist, Album)
 
 // ==========================================
-// 5. MINIMAL API BÖLGESİ (Concert, Song, Label)
+// 5. MINIMAL API ENDPOINTLERİ
 // ==========================================
 
 // --- A) CONCERT ---
@@ -119,10 +147,8 @@ concertGroup.MapGet("/{id}", async (int id, IConcertService service) => {
 });
 
 concertGroup.MapPost("/", async (CreateConcertDto request, IConcertService service) => {
-    try {
-        var newId = await service.CreateAsync(request);
-        return Results.Created($"/api/concert/{newId}", ApiResponse<object>.Ok(new { id = newId }, "Eklendi"));
-    } catch (Exception ex) { return Results.BadRequest(ApiResponse<object>.Fail(ex.Message)); }
+    var newId = await service.CreateAsync(request);
+    return Results.Created($"/api/concert/{newId}", ApiResponse<object>.Ok(new { id = newId }, "Eklendi"));
 }).RequireAuthorization();
 
 concertGroup.MapPut("/{id}", async (int id, UpdateConcertDto request, IConcertService service) => {

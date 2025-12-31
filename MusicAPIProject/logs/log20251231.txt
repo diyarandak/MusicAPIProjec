@@ -255,3 +255,33 @@ INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
 VALUES ('20251231195237_InitialCreate', '9.0.0');
 2025-12-31 22:52:48.474 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 DELETE FROM "__EFMigrationsLock";
+2025-12-31 22:54:03.821 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "type" = 'table' AND "rootpage" IS NOT NULL;
+2025-12-31 22:54:04.048 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Users" AS "u"
+    WHERE NOT ("u"."IsDeleted"))
+2025-12-31 22:54:04.708 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?' (Size = 15), @p2='?' (Size = 10), @p3='?' (DbType = Boolean), @p4='?' (Size = 60), @p5='?' (Size = 5), @p6='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("CreatedAt", "Email", "FullName", "IsDeleted", "Password", "Role", "UpdatedAt")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+RETURNING "Id";
+2025-12-31 22:54:04.719 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?' (Size = 14), @p2='?' (Size = 11), @p3='?' (DbType = Boolean), @p4='?' (Size = 60), @p5='?' (Size = 4), @p6='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("CreatedAt", "Email", "FullName", "IsDeleted", "Password", "Role", "UpdatedAt")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+RETURNING "Id";
+2025-12-31 22:54:04.783 +03:00 [INF] User profile is available. Using '/Users/diyarandak/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-12-31 22:54:04.864 +03:00 [INF] Now listening on: http://localhost:5202
+2025-12-31 22:54:04.865 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-31 22:54:04.866 +03:00 [INF] Hosting environment: Development
+2025-12-31 22:54:04.866 +03:00 [INF] Content root path: /Users/diyarandak/RiderProjects/MusicAPIProject/MusicAPIProject
+2025-12-31 22:55:10.288 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/ - null null
+2025-12-31 22:55:10.336 +03:00 [WRN] Failed to determine the https port for redirect.
+2025-12-31 22:55:10.337 +03:00 [INF] İstek geldi: GET /
+2025-12-31 22:55:10.362 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/ - 404 0 null 75.4719ms
+2025-12-31 22:55:10.369 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5202/, Response status code: 404
+2025-12-31 22:55:14.698 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/swagger/index.html - null null
+2025-12-31 22:55:14.746 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger/index.html - 200 null text/html;charset=utf-8 47.7017ms
+2025-12-31 22:55:15.585 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5202/swagger/v1/swagger.json - null null
+2025-12-31 22:55:15.657 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 71.2783ms
+2025-12-31 22:55:55.371 +03:00 [INF] Application is shutting down...
