@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MusicAPIProject")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d6786e56a764ac65637ebc78936e4b04fd7c027d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d7ef6ed58d2805f56ff34887974e3eb46784e16")]
 [assembly: System.Reflection.AssemblyProductAttribute("MusicAPIProject")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MusicAPIProject")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
