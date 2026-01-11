@@ -118,3 +118,140 @@ RETURNING "Id";
 2025-12-31 22:14:32.486 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger/favicon-32x32.png - 200 628 image/png 0.7601ms
 2025-12-31 22:14:32.573 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5202/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 107.5437ms
 2025-12-31 22:16:51.736 +03:00 [INF] Application is shutting down...
+2025-12-31 22:47:49.421 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-12-31 22:47:49.492 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsLock' AND "type" = 'table';
+2025-12-31 22:47:49.498 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsLock" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK___EFMigrationsLock" PRIMARY KEY,
+    "Timestamp" TEXT NOT NULL
+);
+2025-12-31 22:47:49.499 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-31 19:47:49.498823+00:00');
+SELECT changes();
+2025-12-31 22:47:49.543 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" TEXT NOT NULL CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY,
+    "ProductVersion" TEXT NOT NULL
+);
+2025-12-31 22:47:49.549 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-12-31 22:47:49.550 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-12-31 22:47:49.559 +03:00 [INF] Applying migration '20251231194650_InitialCreate'.
+2025-12-31 22:47:49.576 +03:00 [ERR] Failed executing DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Labels" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Labels" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL,
+    "Country" TEXT NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL
+);
+2025-12-31 22:52:48.351 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+PRAGMA journal_mode = 'wal';
+2025-12-31 22:52:48.395 +03:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-12-31 22:52:48.400 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsLock' AND "type" = 'table';
+2025-12-31 22:52:48.401 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsLock" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK___EFMigrationsLock" PRIMARY KEY,
+    "Timestamp" TEXT NOT NULL
+);
+2025-12-31 22:52:48.401 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-31 19:52:48.401447+00:00');
+SELECT changes();
+2025-12-31 22:52:48.440 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" TEXT NOT NULL CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY,
+    "ProductVersion" TEXT NOT NULL
+);
+2025-12-31 22:52:48.446 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-12-31 22:52:48.448 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-12-31 22:52:48.456 +03:00 [INF] Applying migration '20251231195237_InitialCreate'.
+2025-12-31 22:52:48.470 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Labels" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Labels" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL,
+    "Country" TEXT NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL
+);
+2025-12-31 22:52:48.471 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Users" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Users" PRIMARY KEY AUTOINCREMENT,
+    "FullName" TEXT NOT NULL,
+    "Email" TEXT NOT NULL,
+    "Password" TEXT NOT NULL,
+    "Role" TEXT NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL
+);
+2025-12-31 22:52:48.471 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Artists" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Artists" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL,
+    "Bio" TEXT NOT NULL,
+    "LabelId" INTEGER NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL,
+    CONSTRAINT "FK_Artists_Labels_LabelId" FOREIGN KEY ("LabelId") REFERENCES "Labels" ("Id")
+);
+2025-12-31 22:52:48.471 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Albums" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Albums" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL,
+    "ReleaseDate" TEXT NOT NULL,
+    "Price" TEXT NOT NULL,
+    "ArtistId" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL,
+    CONSTRAINT "FK_Albums_Artists_ArtistId" FOREIGN KEY ("ArtistId") REFERENCES "Artists" ("Id") ON DELETE CASCADE
+);
+2025-12-31 22:52:48.471 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Concerts" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Concerts" PRIMARY KEY AUTOINCREMENT,
+    "Venue" TEXT NOT NULL,
+    "City" TEXT NOT NULL,
+    "Date" TEXT NOT NULL,
+    "ArtistId" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL,
+    CONSTRAINT "FK_Concerts_Artists_ArtistId" FOREIGN KEY ("ArtistId") REFERENCES "Artists" ("Id") ON DELETE CASCADE
+);
+2025-12-31 22:52:48.471 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Songs" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Songs" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL,
+    "DurationSeconds" INTEGER NOT NULL,
+    "TrackNumber" INTEGER NOT NULL,
+    "AlbumId" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "IsDeleted" INTEGER NOT NULL,
+    CONSTRAINT "FK_Songs_Albums_AlbumId" FOREIGN KEY ("AlbumId") REFERENCES "Albums" ("Id") ON DELETE CASCADE
+);
+2025-12-31 22:52:48.471 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Albums_ArtistId" ON "Albums" ("ArtistId");
+2025-12-31 22:52:48.471 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Artists_LabelId" ON "Artists" ("LabelId");
+2025-12-31 22:52:48.472 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Concerts_ArtistId" ON "Concerts" ("ArtistId");
+2025-12-31 22:52:48.472 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Songs_AlbumId" ON "Songs" ("AlbumId");
+2025-12-31 22:52:48.472 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20251231195237_InitialCreate', '9.0.0');
+2025-12-31 22:52:48.474 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM "__EFMigrationsLock";
