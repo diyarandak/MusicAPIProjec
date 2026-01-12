@@ -1,0 +1,33 @@
+# Build results
+bin/
+obj/
+
+# Logs
+logs/
+*.log
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE
+.idea/
+.vs/
+*.swp
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Database files (optional)
+# *.db
+
+# NuGet
+packages/
+*.nupkg
+
+# Rider
+*.sln.iml
